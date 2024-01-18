@@ -60,7 +60,28 @@ export const resolvers = {
         }
         return game;
       });
-      return db.games.find((game) => game.id === args.id)
+      return db.games.find((game) => game.id === args.id);
+    },
+    addAuthor(_, args) {
+      let author = {
+        ...args.author,
+        id: Math.floor(Math.random() * 10000),
+      };
+      db.authors.push(author);
+      return author;
+    },
+    deleteAuthor(_, args) {
+      db.authors = db.authors.filter((author) => author.id !== args.id);
+      return db.authors;
+    },
+    updateAuthor(_, args) {
+      db.authors = db.authors.map((author) => {
+        if (author.id === args.id) {
+          return { ...author, ...args.edits };
+        }
+        return author;
+      });
+      return db.authors.find((author) => author.id === args.id);
     },
   },
 };
